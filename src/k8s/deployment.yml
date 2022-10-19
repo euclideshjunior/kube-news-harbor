@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgsql
+spec:
+  selector:
+    matchLabels:
+      app: pgsql
+  template:
+    metadata:
+      labels:
+        app: pgsql
+    spec:
+      containers:
+        - name: pgsql
+          image: postgres:15.0
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: kubenews
+            - name: POSTGRES_USER
+              value: kubenews
+            - name: POSTGRES_PASSWORD
+              value: "Pg#123"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-pgsql
+spec:
+  selector:
+    app: pgsql
+  ports:
+    - port: 5432
+      protocol: TCP
+  type: ClusterIP
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: euclideshjunior/kube-news:v1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_DATABASE
+              value: "kubenews"
+            - name: DB_USERNAME
+              value: "kubenews"
+            - name: DB_PASSWORD
+              value: "Pg#123"
+            - name: DB_HOST
+              value: "svc-pgsql"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-web
+spec:
+  selector:
+    app: web
+  ports:
+      # Porta do Service
+    - port: 80
+      # Porta do pod
+      targetPort: 8080
+      nodePort: 30000
+      protocol: TCP
+  type: NodePort
+
+
+
