@@ -5,7 +5,7 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 script {
-                    dockerapp = docker.build("euclideshjunior/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
+                    dockerapp = docker.build("euclideshjunior/kube-news:v${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
                 }
             }
         }
@@ -15,7 +15,7 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         dockerapp.push('latest')
-                        dockerapp.push("${env.BUILD_ID}")
+                        dockerapp.push("v${env.BUILD_ID}")
                     }
                 }
             }
