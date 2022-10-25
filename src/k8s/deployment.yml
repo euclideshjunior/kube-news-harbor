@@ -70,6 +70,8 @@ spec:
               value: "Pg#123"
             - name: DB_HOST
               value: "svc-pgsql"
+          imagePullSecrets:
+            - name: harbor-esrrnp-project
 
 ---
 
