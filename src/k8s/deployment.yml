@@ -86,4 +86,5 @@ spec:
       # Porta do pod
       targetPort: 8080
       protocol: TCP
-  type: LoadBalancer
+      nodePort: 30000
+  type: NodePort

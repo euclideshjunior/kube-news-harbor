@@ -9,7 +9,7 @@ pipeline {
             steps {
                 script {
                     sh 'sed -i s/{{TAG_APP}}/$tag_version/g ./src/views/partial/nav-bar.ejs'
-                    dockerapp = docker.build("euclideshjunior/kube-news:v${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
+                    dockerapp = docker.build("registry.reitoria-edu.lab/esrrnp/kube-news:v${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
                 }
             }
         }
@@ -17,7 +17,7 @@ pipeline {
         stage("Push Docker Image to Registry") {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                    docker.withRegistry('https://registry.reitoria-edu.lab', 'dockerharbor') {
                         dockerapp.push('latest')
                         dockerapp.push("v${env.BUILD_ID}")
                     }
