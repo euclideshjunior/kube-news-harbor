@@ -9,7 +9,7 @@ pipeline {
             steps {
                 script {
                     sh 'sed -i s/{{TAG_APP}}/$tag_version/g ./src/views/partial/nav-bar.ejs'
-                    dockerapp = docker.build("registry.reitoria-edu.lab/esrrnp/kube-news:v${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
+                    dockerapp = docker.build("registry.reitoria-edu.lab/kube-news/kube-news:v${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
                 }
             }
         }

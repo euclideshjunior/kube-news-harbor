@@ -58,7 +58,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: euclideshjunior/kube-news:{{TAG}}
+          image: registry.reitoria-edu.lab/kube-news/kube-news:{{TAG}}
           ports:
             - containerPort: 8080
           env:
